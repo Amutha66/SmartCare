@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCheck - Mental Health Self-Assessment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>MindCheck</h1>
+    <p>Your Mental Health Self-Check Tool</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="anxiety.html">Anxiety</a>
+      <a href="depression.html">Depression</a>
+      <a href="stress.html">Stress</a>
+      <a href="burnout.html">Burnout</a>
+      <a href="sleep.html">Sleep Health</a>
+    </nav>
+  </header>
+  <div class="container">
+    <h2>How have you been feeling lately?</h2>
+    <form id="mentalHealthForm">
+      <div class="question">
+        <label>1. I have felt sad or down more than usual:</label>
+        <select name="q1">
+          <option value="0">Not at all</option>
+          <option value="1">Sometimes</option>
+          <option value="2">Often</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>2. I have lost interest in things I used to enjoy:</label>
+        <select name="q2">
+          <option value="0">Not at all</option>
+          <option value="1">Sometimes</option>
+          <option value="2">Often</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>3. I have felt anxious or worried most days:</label>
+        <select name="q3">
+          <option value="0">Not at all</option>
+          <option value="1">Sometimes</option>
+          <option value="2">Often</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>4. My sleep has been disturbed or restless:</label>
+        <select name="q4">
+          <option value="0">Not at all</option>
+          <option value="1">Sometimes</option>
+          <option value="2">Often</option>
+        </select>
+      </div>
+      <button type="submit">Check My Status</button>
+      <div class="result" id="result"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('mentalHealthForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      let total = 0;
+      for (let i = 1; i <= 4; i++) {
+        total += parseInt(form[`q${i}`].value);
+      }
+
+      const resultText = document.getElementById('result');
+      if (total <= 2) {
+        resultText.textContent = "You're doing well, but continue taking care of yourself.";
+      } else if (total <= 5) {
+        resultText.textContent = "You may be experiencing mild stress. Consider taking breaks and talking to someone.";
+      } else {
+        resultText.textContent = "You're showing signs of distress. Please consider seeking help from a counselor or mental health professional.";
+      }
+    });
+  </script>
+</body>
+</html>
