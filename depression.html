@@ -1,1 +1,128 @@
-huh
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartCare - Understanding Depression</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>SmartCare</h1>
+    <p>Your Mental Health Self-Check Tool</p>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="anxiety.html">Anxiety</a>
+      <a href="depression.html">Depression</a>
+      <a href="bipolar.html">Bipolar</a>
+      <a href="ptsd.html">PTSD</a>
+      <a href="ocd.html">OCD</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Understanding Depression</h2>
+    <p>
+      Depression is a common but serious mood disorder that affects how you feel, think, and handle daily activities. It can cause persistent feelings of sadness, loss of interest, and can impact sleep, appetite, and energy levels. With the right support and treatment, most people with depression can recover and lead fulfilling lives.
+    </p>
+
+    <section>
+      <h3>Frequently Asked Questions</h3>
+      <div class="faq">
+        <details>
+          <summary>What are the common symptoms of depression?</summary>
+          <p>
+            Common symptoms include persistent sadness, loss of interest in activities, changes in appetite or weight, trouble sleeping or sleeping too much, loss of energy, feelings of worthlessness, and difficulty concentrating.
+          </p>
+        </details>
+        <details>
+          <summary>What causes depression?</summary>
+          <p>
+            Depression can be caused by a combination of genetic, biological, environmental, and psychological factors. Stressful life events, medical conditions, and certain medications can also contribute.
+          </p>
+        </details>
+        <details>
+          <summary>How can depression be treated?</summary>
+          <p>
+            Depression is treatable. Common treatments include talking therapies (such as cognitive behavioral therapy), medication, lifestyle changes, and support from friends and family. If you think you may be depressed, it’s important to seek help.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <section style="margin: 2em 0;">
+      <h3>Watch: Overcoming Depression</h3>
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+        <iframe src="https://www.youtube.com/embed/rqjC8b2uosE" title="Overcoming Depression" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+    </section>
+
+    <div style="margin-top:2em;">
+      <strong>Take the next step:</strong>
+      <ul>
+        <li>Try the <a href="index.html">mental health self-check</a> on the home page.</li>
+        <li>Or talk to our MindCheck AI chatbot below for support.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Chatbot Section (reused from index.html, no changes needed) -->
+  <section id="chatbot-section" style="margin:3rem auto;max-width:600px;background:#f2f2f2;padding:1.5rem;border-radius:1rem;box-shadow:0 2px 12px #ddd;">
+    <h3 style="margin-bottom:1rem;">💬 Ask MindCheck AI</h3>
+    <div id="chat-messages" style="min-height:80px;margin-bottom:1rem;"></div>
+    <form id="chat-form" style="display:flex;gap:0.5rem;">
+      <input id="chat-input" type="text" placeholder="Type your question..." style="flex:1;padding:0.5rem 1rem;border-radius:1rem;border:1px solid #ccc;" required />
+      <button type="submit" style="background:#7f5af0;color:#fff;border:none;border-radius:1rem;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;">Send</button>
+    </form>
+    <div id="chat-error" style="color:#ff3333;font-size:0.9rem;margin-top:0.5rem;"></div>
+  </section>
+
+  <script>
+    // Chatbot Logic (copied from index.html)
+    async function query(data) {
+      const response = await fetch(
+        "https://charlotte-23045030-flowise.hf.space/api/v1/prediction/85c55ab7-c825-487c-b95b-32c4ed97dfd0",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        }
+      );
+      const result = await response.json();
+      return result;
+    }
+
+    function renderMarkdown(md) {
+      if (window.marked) return marked.parse(md);
+      return md.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\*(.*?)\*/g, '<i>$1</i>').replace(/\n/g, '<br>');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const errorDiv = document.getElementById('chat-error');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userMsg = input.value.trim();
+        if (!userMsg) return;
+        messages.innerHTML += `<div class='chat-msg user'><b>You:</b> ${userMsg}</div>`;
+        input.value = '';
+        errorDiv.textContent = '';
+        try {
+          messages.innerHTML += `<div class='chat-msg bot' style='color:#999;'>MindCheck AI is typing...</div>`;
+          const response = await query({ "question": userMsg });
+          const botMsg = response.text || "I'm here to help, but I didn't understand that.";
+          messages.innerHTML = messages.innerHTML.replace('MindCheck AI is typing...', '');
+          messages.innerHTML += `<div class='chat-msg bot'><b>MindCheck AI:</b> ${renderMarkdown(botMsg)}</div>`;
+          messages.scrollTop = messages.scrollHeight;
+        } catch (err) {
+          errorDiv.textContent = 'Sorry, something went wrong.';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
