@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PTSD</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <header>
@@ -19,6 +20,7 @@
       <a href="ocd.html">OCD</a>
     </nav>
   </header>
+
   <div class="container">
     <h2>What is PTSD?</h2>
     <p>Post-Traumatic Stress Disorder (PTSD) is a condition triggered by experiencing or witnessing a terrifying event. It can lead to long-lasting mental and emotional effects.</p>
@@ -37,5 +39,68 @@
       <li>Mindfulness and grounding techniques</li>
     </ul>
   </div>
+
+  <!-- 💬 Chatbot Section -->
+  <section style="margin:3rem auto;max-width:600px;background:#f3f4f6;padding:1.5rem;border-radius:1rem;box-shadow:0 2px 12px #ccc;">
+    <h3 style="margin-bottom:1rem;">💬 Ask SmartCare AI</h3>
+    <div id="chat-messages" style="min-height:80px;margin-bottom:1rem;"></div>
+    <form id="chat-form" style="display:flex;gap:0.5rem;">
+      <input id="chat-input" type="text" placeholder="Type your PTSD question..." style="flex:1;padding:0.5rem 1rem;border-radius:1rem;border:1px solid #ccc;" required />
+      <button type="submit" style="background:#7f5af0;color:#fff;border:none;border-radius:1rem;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;">Send</button>
+    </form>
+    <div id="chat-error" style="color:#ff3333;font-size:0.9rem;margin-top:0.5rem;"></div>
+  </section>
+
+  <script>
+    async function query(data) {
+      const response = await fetch(
+        "https://charlotte-23045030-flowise.hf.space/api/v1/prediction/85c55ab7-c825-487c-b95b-32c4ed97dfd0",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+      const result = await response.json();
+      return result;
+    }
+
+    function renderMarkdown(md) {
+      if (window.marked) return marked.parse(md);
+      return md.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+               .replace(/\*(.*?)\*/g, '<i>$1</i>')
+               .replace(/\n/g, '<br>');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('chat-form');
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const errorDiv = document.getElementById('chat-error');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userMsg = input.value.trim();
+        if (!userMsg) return;
+
+        messages.innerHTML += `<div class='chat-msg user'><b>You:</b> ${userMsg}</div>`;
+        input.value = '';
+        errorDiv.textContent = '';
+
+        try {
+          messages.innerHTML += `<div class='chat-msg bot' style='color:#999;'>SmartCare AI is typing...</div>`;
+          const response = await query({ "question": userMsg });
+          const botMsg = response.text || "I'm here to help, but I didn't understand that.";
+          messages.innerHTML = messages.innerHTML.replace('SmartCare AI is typing...', '');
+          messages.innerHTML += `<div class='chat-msg bot'><b>SmartCare AI:</b> ${renderMarkdown(botMsg)}</div>`;
+          messages.scrollTop = messages.scrollHeight;
+        } catch (err) {
+          errorDiv.textContent = 'Sorry, there was a problem contacting SmartCare AI.';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
