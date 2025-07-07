@@ -62,14 +62,14 @@
       <strong>Take the next step:</strong>
       <ul>
         <li>Try the <a href="index.html">mental health self-check</a> on the home page.</li>
-        <li>Or talk to our MindCheck AI chatbot below for support.</li>
+        <li>Or talk to our SmartCare AI chatbot below for support.</li>
       </ul>
     </div>
   </div>
 
   <!-- Chatbot Section (reused from index.html, no changes needed) -->
   <section id="chatbot-section" style="margin:3rem auto;max-width:600px;background:#f2f2f2;padding:1.5rem;border-radius:1rem;box-shadow:0 2px 12px #ddd;">
-    <h3 style="margin-bottom:1rem;">💬 Ask MindCheck AI</h3>
+    <h3 style="margin-bottom:1rem;">💬 Ask SmartCare AI</h3>
     <div id="chat-messages" style="min-height:80px;margin-bottom:1rem;"></div>
     <form id="chat-form" style="display:flex;gap:0.5rem;">
       <input id="chat-input" type="text" placeholder="Type your question..." style="flex:1;padding:0.5rem 1rem;border-radius:1rem;border:1px solid #ccc;" required />
@@ -112,11 +112,11 @@
         input.value = '';
         errorDiv.textContent = '';
         try {
-          messages.innerHTML += `<div class='chat-msg bot' style='color:#999;'>MindCheck AI is typing...</div>`;
+          messages.innerHTML += `<div class='chat-msg bot' style='color:#999;'>SmartCare AI is typing...</div>`;
           const response = await query({ "question": userMsg });
           const botMsg = response.text || "I'm here to help, but I didn't understand that.";
-          messages.innerHTML = messages.innerHTML.replace('MindCheck AI is typing...', '');
-          messages.innerHTML += `<div class='chat-msg bot'><b>MindCheck AI:</b> ${renderMarkdown(botMsg)}</div>`;
+          messages.innerHTML = messages.innerHTML.replace('SmartCare AI is typing...', '');
+          messages.innerHTML += `<div class='chat-msg bot'><b>SmartCare AI:</b> ${renderMarkdown(botMsg)}</div>`;
           messages.scrollTop = messages.scrollHeight;
         } catch (err) {
           errorDiv.textContent = 'Sorry, something went wrong.';
