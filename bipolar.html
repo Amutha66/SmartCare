@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bipolar Disorder Support Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f8fb; margin: 0; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+        h1 { color: #3a3a7a; }
+        .chatbox { border: 1px solid #cce; border-radius: 8px; padding: 16px; background: #f9faff; height: 320px; overflow-y: auto; margin-bottom: 16px; }
+        .user, .agent { margin: 8px 0; }
+        .user { text-align: right; color: #3a3a7a; }
+        .agent { text-align: left; color: #2a7a3a; }
+        .input-row { display: flex; }
+        .input-row input { flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccd; }
+        .input-row button { margin-left: 8px; padding: 8px 16px; border: none; border-radius: 4px; background: #3a3a7a; color: #fff; cursor: pointer; }
+        .input-row button:hover { background: #2a2a5a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bipolar Disorder Support Agent</h1>
+        <p>Welcome! I'm here to provide information and support about bipolar disorder. How can I help you today?</p>
+        <div class="chatbox" id="chatbox">
+            <div class="agent">Hello! I'm your support agent. Ask me anything about bipolar disorder, symptoms, coping strategies, or where to get help.</div>
+        </div>
+        <form class="input-row" id="chat-form" autocomplete="off">
+            <input type="text" id="user-input" placeholder="Type your question..." required />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        const chatbox = document.getElementById('chatbox');
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('user-input');
+
+        // Simple agent responses
+        function getAgentResponse(message) {
+            const msg = message.toLowerCase();
+            if (msg.includes('symptom')) {
+                return "Common symptoms of bipolar disorder include mood swings, periods of depression, and episodes of mania or hypomania.";
+            } else if (msg.includes('cope') || msg.includes('help')) {
+                return "Coping strategies include maintaining a routine, seeking therapy, taking prescribed medication, and reaching out to support groups.";
+            } else if (msg.includes('treatment')) {
+                return "Treatment often involves a combination of medication, psychotherapy, and lifestyle changes. It's important to consult a mental health professional.";
+            } else if (msg.includes('emergency')) {
+                return "If you or someone you know is in crisis, please contact emergency services or a mental health helpline immediately.";
+            } else if (msg.includes('resource') || msg.includes('support group')) {
+                return "You can find support groups through local hospitals, mental health organizations, or online communities such as the Depression and Bipolar Support Alliance (DBSA).";
+            } else if (msg.includes('what is') || msg.includes('bipolar')) {
+                return "Bipolar disorder is a mental health condition characterized by extreme mood swings, including emotional highs (mania or hypomania) and lows (depression).";
+            } else {
+                return "I'm here to help with information about bipolar disorder. Could you please clarify your question or ask about symptoms, coping, treatment, or resources?";
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userMsg = input.value.trim();
+            if (!userMsg) return;
+            chatbox.innerHTML += `<div class='user'>${userMsg}</div>`;
+            const agentMsg = getAgentResponse(userMsg);
+            setTimeout(() => {
+                chatbox.innerHTML += `<div class='agent'>${agentMsg}</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 500);
+            input.value = '';
+            chatbox.scrollTop = chatbox.scrollHeight;
+        });
+    </script>
+</body>
+</html>
+
 
