@@ -92,7 +92,6 @@
       return result;
     }
 
-    // Render markdown safely for chatbot answers
     function renderMarkdown(md) {
       if (window.marked) return marked.parse(md);
       return md.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
@@ -126,9 +125,6 @@
           errorDiv.textContent = 'Sorry, there was a problem contacting SmartCare AI.';
         }
       });
-
-      // Accessibility: focus input on page load
-      input.focus();
     });
 
     // Back to Top Arrow Logic
