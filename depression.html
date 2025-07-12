@@ -57,25 +57,11 @@
       </div>
     </section>
 
-    <section>
-      <h3>More About Depression</h3>
-      <p>
-        Depression is not simply feeling sad or going through a rough patch. It is a complex mental health condition that can affect anyone, regardless of age, gender, or background. It can impact relationships, work, and physical health. Many people with depression may feel isolated or misunderstood, but it is important to remember that help is available and recovery is possible.
-      </p>
-      <ul>
-        <li><strong>Myth:</strong> "Depression is a sign of weakness."<br><em>Fact:</em> Depression is a medical condition, not a character flaw. It can affect anyone and is not a result of personal weakness.</li>
-        <li><strong>Myth:</strong> "You can just 'snap out of it.'"<br><em>Fact:</em> Overcoming depression usually requires support, treatment, and time. It is not something people can simply will away.</li>
-        <li><strong>Tip:</strong> If you or someone you know is struggling, try to reach out to a trusted friend, family member, or mental health professional. Small steps, like maintaining a routine, getting enough sleep, and spending time outdoors, can also help.</li>
-      </ul>
-    </section>
-
     <section style="margin: 2em 0;">
       <h3>Watch: Overcoming Depression</h3>
-    
       <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <iframe src="https://www.youtube.com/embed/Izy1TgMe-tI" title="Overcoming Depression" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        <iframe src="https://www.youtube.com/embed/Izy1TgMe-tI" title="Managing Depression" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
       </div>
-      <p style="margin-top:0.5em;font-size:0.98em;color:#444;">Above: Two helpful videos about overcoming and understanding depression. The first is a personal story, the second explains symptoms and treatment options.</p>
     </section>
 
     <div style="margin-top:2em;">
@@ -107,7 +93,7 @@
     // Chatbot Logic (copied from index.html)
     async function query(data) {
       const response = await fetch(
-        "https://AlishbahRP-flowise.hf.space/api/v1/prediction/c5e2d270-ea49-4467-baab-add115016b40", // Replace with your HuggingFace API URL
+        "https://Jae014-flowise2.hf.space/api/v1/prediction/d72d90b6-f96b-4fe0-8bdd-1aea21c3351d", // Replace with your HuggingFace API URL
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,26 +119,17 @@
         e.preventDefault();
         const userMsg = input.value.trim();
         if (!userMsg) return;
-        // Show user message
-        messages.innerHTML += `<div class='chat-msg user' style="margin-bottom:8px;"><b>You:</b> ${userMsg}</div>`;
+        messages.innerHTML += `<div class='chat-msg user'><b>You:</b> ${userMsg}</div>`;
         input.value = '';
         errorDiv.textContent = '';
-        // Show typing indicator
-        const typingId = 'typing-' + Date.now();
-        messages.innerHTML += `<div id="${typingId}" class='chat-msg bot' style='color:#999;margin-bottom:8px;'>SmartCare AI is typing...</div>`;
-        messages.scrollTop = messages.scrollHeight;
         try {
+          messages.innerHTML += `<div class='chat-msg bot' style='color:#999;'>SmartCare AI is typing...</div>`;
           const response = await query({ "question": userMsg });
           const botMsg = response.text || "I'm here to help, but I didn't understand that.";
-          // Remove typing indicator
-          const typingDiv = document.getElementById(typingId);
-          if (typingDiv) typingDiv.remove();
-          // Show bot message
-          messages.innerHTML += `<div class='chat-msg bot' style="margin-bottom:8px;"><b>SmartCare AI:</b> ${renderMarkdown(botMsg)}</div>`;
+          messages.innerHTML = messages.innerHTML.replace('SmartCare AI is typing...', '');
+          messages.innerHTML += `<div class='chat-msg bot'><b>SmartCare AI:</b> ${renderMarkdown(botMsg)}</div>`;
           messages.scrollTop = messages.scrollHeight;
         } catch (err) {
-          const typingDiv = document.getElementById(typingId);
-          if (typingDiv) typingDiv.remove();
           errorDiv.textContent = 'Sorry, something went wrong.';
         }
       });
